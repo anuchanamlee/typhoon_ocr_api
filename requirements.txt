@@ -1,0 +1,5 @@
+fastapi==0.122.0
+uvicorn[standard]==0.38.0
+PyMuPDF==1.26.6
+typhoon-ocr==0.4.1
+python-multipart==0.0.20
