@@ -1,5 +1,7 @@
 # Typhoon OCR API
 
+[![CI](https://github.com/anuchanamlee/typhoon_ocr_api/actions/workflows/ci.yml/badge.svg)](https://github.com/anuchanamlee/typhoon_ocr_api/actions/workflows/ci.yml)
+
 A REST API for Thai-language OCR on images and multi-page PDFs, running on a
 self-hosted model ([Typhoon OCR 1.5](https://ollama.com/scb10x/typhoon-ocr1.5-3b)
 served by Ollama). No document leaves your own machine.
@@ -48,6 +50,20 @@ client ──multipart──▶ FastAPI ──PyMuPDF──▶ PNG per page
    ```
 
 Docs: http://localhost:8000/docs
+
+## Tests
+
+```bash
+pip install -r requirements-dev.txt
+python -m pytest -q
+```
+
+The model is replaced by a fake, so tests run anywhere without Ollama. They cover
+input validation (MIME, `%PDF` signature, empty and oversized uploads, page and DPI
+bounds), page selection (`start_page`, `end_page`, `max_pages`, clamping to the real
+page count), response order when pages finish out of order, temp-file cleanup, and
+that no more than `OCR_MAX_PARALLEL` pages are sent to the model at once.
+CI runs them on every push and pull request, then builds the Docker image.
 
 ## Configuration
 
